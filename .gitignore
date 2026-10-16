@@ -1,0 +1,20 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Fichiers compilés Java
+*.class
+out/
+target/
+
+# Dossiers de compilation Eclipse
+Client_TP1/bin/
+Server_TP1/bin/
+
+# Fichiers temporaires et journaux
+*.log
+hs_err_pid*
+
+# Système d'exploitation
+.DS_Store
+Thumbs.db
