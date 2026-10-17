@@ -1,4 +1,4 @@
-package server.protocol;
+package common.protocol;
 
 public class AuthFailurePacket extends Packet {
 	private final String reason;

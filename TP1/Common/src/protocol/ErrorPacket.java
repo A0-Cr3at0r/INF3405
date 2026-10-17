@@ -1,4 +1,4 @@
-package server.protocol;
+package common.protocol;
 
 public class ErrorPacket extends Packet {
     private final String reason;

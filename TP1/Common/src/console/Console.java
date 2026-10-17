@@ -1,4 +1,4 @@
-package server.console;
+package common.console;
 
 import java.util.Scanner;
 import java.time.ZoneId;
@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import common.model.ChatMessage;
 import common.validator.InputValidator;
 
-public class ServerConsole {
+public class Console {
 	private final Scanner scanner = new Scanner(System.in);
 	
 	//was made with the help of AI

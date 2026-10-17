@@ -1,4 +1,4 @@
-package server.protocol;
+package common.protocol;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

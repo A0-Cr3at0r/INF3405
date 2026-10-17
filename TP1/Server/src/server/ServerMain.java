@@ -2,7 +2,7 @@ package server;
 
 import server.auth.AuthService;
 import server.chat.ChatCoordinator;
-import server.console.ServerConsole;
+import common.console.Console;
 import server.network.ChatServer;
 import server.persistence.HistoryManager;
 import server.persistence.UserAccountManager;
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class ServerMain {
 	
 	public static void main(String[] args) {
-		ServerConsole console = new ServerConsole();
+		Console console = new Console();
 		
 		String ip = console.askIpAddress();
 		int port = console.askPort();

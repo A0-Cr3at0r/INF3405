@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import server.protocol.PacketDecoder;
-import server.protocol.PacketEncoder;
-import server.protocol.Packet;
+import common.protocol.PacketDecoder;
+import common.protocol.PacketEncoder;
+import common.protocol.Packet;
 
 public class ClientConnection {
 	private final Socket socket;

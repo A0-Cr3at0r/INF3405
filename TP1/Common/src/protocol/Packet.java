@@ -1,4 +1,4 @@
-package server.protocol;
+package common.protocol;
 
 public abstract class Packet {
     private final PacketType type;

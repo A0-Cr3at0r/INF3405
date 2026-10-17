@@ -1,4 +1,4 @@
-package server.protocol;
+package common.protocol;
 
 public enum PacketType {
     AUTH_REQUEST,

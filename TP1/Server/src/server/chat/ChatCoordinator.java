@@ -1,11 +1,11 @@
 package server.chat;
 
 import server.auth.AuthService;
-import server.console.ServerConsole;
+import common.console.Console;
 import common.model.ChatMessage;
 import server.network.ClientConnection;
 import server.persistence.HistoryManager;
-import server.protocol.*;
+import common.protocol.*;
 import common.validator.InputValidator;
 
 import java.util.HashMap;
@@ -16,17 +16,17 @@ import java.time.Instant;
 public class ChatCoordinator {
 	private final AuthService authService;
     private final HistoryManager historyManager;
-    private final ServerConsole console;
+    private final Console console;
 
     private final Map<String, ClientConnection> activeUsers = new HashMap<>();
     
     public ChatCoordinator(
     		AuthService authService, 
     		HistoryManager historyManager,
-    		ServerConsole serverConsole) {
+    		Console console) {
     	this.authService = authService;
         this.historyManager = historyManager;
-        this.console = serverConsole;
+        this.console = console;
     }
     
     private synchronized void authenticateClient(

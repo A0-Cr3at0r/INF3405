@@ -3,7 +3,7 @@ package server.network;
 import java.io.IOException;
 
 import server.chat.ChatCoordinator;
-import server.protocol.*;
+import common.protocol.*;
 
 public class ClientHandler implements Runnable {
 	private final ClientConnection connection;

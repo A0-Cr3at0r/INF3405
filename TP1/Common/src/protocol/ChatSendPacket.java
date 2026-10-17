@@ -1,4 +1,4 @@
-package server.protocol;
+package common.protocol;
 
 
 //client -> server
