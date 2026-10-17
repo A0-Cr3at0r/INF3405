@@ -81,11 +81,21 @@ public class Console {
 		return;
 	}
 
-	public  void showAuthSuccess() {
+	public void showAuthSuccess() {
 		System.out.println("Authentification réussie !");
 	}
 
 	public void shawAuthFailure(String reason) {
 		System.out.println("Échec de l'authentification : " + reason);
+	}
+
+	public void showDisconnect() {
+		System.out.println("Vous êtes déconnecté(e)");
+	}
+
+	public void beginNewChat() {
+		System.out.println("\u001B[33m" +
+				"-------------------------- *** Nouveaux Messages *** -------------------------" +
+				"\u001B[0m");
 	}
 }

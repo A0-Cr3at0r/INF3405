@@ -22,15 +22,15 @@ public class ClientAuthenticator {
      }
 
 
-    public void authenticateMe(
+    public String authenticateMe(
             DataInputStream socketInput,
             DataOutputStream socketOutput) {
-
+        String username;
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print("Entrez votre nom d'utilisateur : ");
-            String username = scanner.nextLine();
+            username = scanner.nextLine();
 
             System.out.print("Entrez votre mot de passe : ");
             String password = scanner.nextLine();
@@ -60,11 +60,13 @@ public class ClientAuthenticator {
 
             } catch (IOException e) {
                 console.showError(e.getMessage());
-                return;
+                return username;
             }
         }
 
         scanner.close();
+
+        return username;
     }
 
 }

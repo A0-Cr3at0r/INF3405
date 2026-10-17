@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 import authentication.ClientAuthenticator;
+import chatCoordinator.ChatCoordinator;
 import  common.console.Console;
 import common.protocol.PacketDecoder;
 import common.protocol.PacketEncoder;
@@ -12,7 +13,6 @@ import common.validator.InputValidator;
 
 public class Client {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         Console console = new Console();
         PacketEncoder packetEncoder =  new PacketEncoder();
         PacketDecoder packetDecoder = new PacketDecoder();
@@ -32,23 +32,21 @@ public class Client {
                             packetDecoder
                     );
 
-            clientAuthenticator.authenticateMe(in, out);
+            String username = clientAuthenticator.authenticateMe(in, out);
 
-                // Logique pour envoyer et recevoir les messages en continu devra etre codé ici
-                
-                // TODO: Recevoir et afficher automatiquement les 15 messages les plus récents de l'historique fournis par le serveur[cite: 17].
-                
-                // TODO: Démarrer un nouveau Thread ici côté client pour écouter en continu (in.readUTF()) les messages diffusés par le serveur sans bloquer la saisie utilisateur[cite: 17].
-                
-                // TODO: Implémenter une boucle de saisie (scanner.nextLine()) permettant à l'utilisateur de taper et d'envoyer des messages (out.writeUTF())[cite: 17].
-                // TODO: S'assurer de valider que la longueur du message saisi ne dépasse pas 200 caractères avant de l'envoyer[cite: 17].
-                // TODO: Gérer la commande de déconnexion pour fermer proprement la session[cite: 17].
+            ChatCoordinator chatCoordinator =
+                    new ChatCoordinator(
+                            username,
+                            console,
+                            packetDecoder,
+                            packetEncoder,
+                            socket
+                    );
 
+            chatCoordinator.launchChat(in, out);
             
         } catch (IOException e) {
             System.err.println("Impossible de se connecter au serveur : " + e.getMessage());
-        } finally {
-            scanner.close();
         }
     }
 }
