@@ -8,7 +8,12 @@ import common.model.ChatMessage;
 import common.validator.InputValidator;
 
 public class Console {
-	private final Scanner scanner = new Scanner(System.in);
+	private final Scanner scanner;
+	
+	
+	public Console(Scanner scanner) {
+	    this.scanner = scanner;
+	}
 	
 	//was made with the help of AI
 	private final DateTimeFormatter messageDateFormat =
