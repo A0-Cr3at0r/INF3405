@@ -52,21 +52,40 @@ public class Console {
 
 		System.out.println("Serveur en écoute sur " + ip + ":" + port);
 	}
-	
-	public void showMessage(ChatMessage message) {
+
+	public void showMessage(ChatMessage message, boolean isMine) {
 	    String date = messageDateFormat.format(message.getTimestamp());
 
-	    System.out.println(
-	        "[" + message.getUsername()
-	        + " - " + message.getClientIp()
-	        + ":" + message.getClientPort()
-	        + " - " + date
-	        + "] : " + message.getContent()
-	    );
+		if (isMine) {
+			System.out.println("\u001B[32m"
+					+ "[" + message.getUsername()
+					+ " - " + message.getClientIp()
+					+ ":" + message.getClientPort()
+					+ " - " + date
+					+ "] : " + message.getContent()
+					+ "\u001B[0m");
+
+		} else {
+			System.out.println("\u001B[34m"
+					+ "[" + message.getUsername()
+					+ " - " + message.getClientIp()
+					+ ":" + message.getClientPort()
+					+ " - " + date
+					+ "] : " + message.getContent()
+					+ "\u001B[0m");
+		}
 	}
 	
-	public static void showError(String message) {
-
+	public void showError(String message) {
+		System.err.println(message);
 		return;
+	}
+
+	public  void showAuthSuccess() {
+		System.out.println("Authentification réussie !");
+	}
+
+	public void shawAuthFailure(String reason) {
+		System.out.println("Échec de l'authentification : " + reason);
 	}
 }
