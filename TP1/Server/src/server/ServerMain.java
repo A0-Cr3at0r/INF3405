@@ -8,16 +8,18 @@ import server.persistence.HistoryManager;
 import server.persistence.UserAccountManager;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class ServerMain {
 	
 	public static void main(String[] args) {
-		Console console = new Console();
+		try(Scanner scanner = new Scanner(System.in)){
 		
-		String ip = console.askIpAddress();
-		int port = console.askPort();
-		
-		try {
+			Console console = new Console(scanner);
+			
+			String ip = console.askIpAddress();
+			int port = console.askPort();
+
 			UserAccountManager accountManager = new UserAccountManager();
 			HistoryManager historyManager = new HistoryManager();
 			

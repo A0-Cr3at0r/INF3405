@@ -9,64 +9,42 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class ClientAuthenticator {
-     private final PacketDecoder packetDecoder;
-     private final PacketEncoder packetEncoder;
-     private final Console console;
+	private final PacketDecoder packetDecoder;
+	private final PacketEncoder packetEncoder;
+	private final Console console;
+	private final Scanner scanner;
 
-     public ClientAuthenticator(Console console,
-                                 PacketEncoder packetEncoder,
-                                 PacketDecoder packetDecoder) {
-        this.console = console;
-        this.packetEncoder = packetEncoder;
-        this.packetDecoder = packetDecoder;
-     }
+	public ClientAuthenticator(Console console, PacketEncoder packetEncoder, PacketDecoder packetDecoder,
+			Scanner scanner) {
+		this.console = console;
+		this.packetEncoder = packetEncoder;
+		this.packetDecoder = packetDecoder;
+		this.scanner = scanner;
+	}
 
+	public String authenticateMe(DataInputStream socketInput, DataOutputStream socketOutput) throws IOException {
+		String username;
 
-    public String authenticateMe(
-            DataInputStream socketInput,
-            DataOutputStream socketOutput) {
-        String username;
-        Scanner scanner = new Scanner(System.in);
+		System.out.print("Entrez votre nom d'utilisateur : ");
+		username = scanner.nextLine();
 
-        while (true) {
-            System.out.print("Entrez votre nom d'utilisateur : ");
-            username = scanner.nextLine();
+		System.out.print("Entrez votre mot de passe : ");
+		String password = scanner.nextLine();
 
-            System.out.print("Entrez votre mot de passe : ");
-            String password = scanner.nextLine();
+		packetEncoder.write(new AuthRequestPacket(username, password), socketOutput);
 
-            try {
-                packetEncoder.write(
-                        new AuthRequestPacket(username, password),
-                        socketOutput
-                );
+		Packet packet = packetDecoder.read(socketInput);
 
-                Packet packet = packetDecoder.read(socketInput);
+		// This part was patially made with AI
+		if (packet instanceof AuthSuccessPacket) {
+			console.showAuthSuccess();
+			return username;
 
-                //This part was patially made with AI
-                if (packet instanceof AuthSuccessPacket) {
-                    console.showAuthSuccess();
-                    break;
+		} else if (packet instanceof AuthFailurePacket failure) {
+			throw new IOException(failure.getReason());
 
-                } else if (packet instanceof AuthFailurePacket failure) {
-                    console.showError(failure.getReason());
-
-                } else {
-                    throw new IOException(
-                            "Paquet inattendu lors de l'authentification : "
-                                    + packet.getClass().getSimpleName()
-                    );
-                }
-
-            } catch (IOException e) {
-                console.showError(e.getMessage());
-                return username;
-            }
-        }
-
-        scanner.close();
-
-        return username;
-    }
-
+		} else {
+			throw new IOException("Paquet inattendu lors de l'authentification : " + packet.getClass().getSimpleName());
+		}
+	}
 }

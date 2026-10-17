@@ -20,6 +20,7 @@ public class ChatCoordinator {
     private final PacketEncoder packetEncoder;
     private final Console console;
     private final Socket socket;
+    private final Scanner scanner;
 
     private volatile boolean receiverFlag = true;
     private volatile boolean emitterFlag = true;
@@ -32,13 +33,15 @@ public class ChatCoordinator {
             Console console,
             PacketDecoder packetDecoder,
             PacketEncoder packetEncoder,
-            Socket socket) {
+            Socket socket,
+            Scanner scanner) {
 
         this.username = username;
         this.console = console;
         this.packetDecoder = packetDecoder;
         this.packetEncoder = packetEncoder;
         this.socket = socket;
+        this.scanner = scanner;
     }
 
     public void launchChat(
@@ -52,7 +55,7 @@ public class ChatCoordinator {
 
         receiverFlag = true;
         emitterFlag = true;
-
+        
         //Partially Made with AI
         receiverThread = new Thread(() -> {
             try {
@@ -73,9 +76,9 @@ public class ChatCoordinator {
 
         //Partially Made with AI
         emitterThread = new Thread(() -> {
-            try (Scanner scanner = new Scanner(System.in)) {
+            try {
                 while (emitterFlag) {
-                    System.out.print("Saisissez un message : ");
+                    //System.out.print("Saisissez un message : ");
 
                     if (!scanner.hasNextLine()) {
                         disconnect();
@@ -85,6 +88,13 @@ public class ChatCoordinator {
                     String message = scanner.nextLine();
 
                     if (!emitterFlag) {
+                        break;
+                    }
+                    
+                    if (message.equals("/quit")) {
+                        packetEncoder.write(new DisconnectPacket(), socketOutput);
+                        disconnect();
+                        console.showDisconnect();
                         break;
                     }
 
@@ -116,6 +126,11 @@ public class ChatCoordinator {
             }
         });
 
+
+        System.out.println(
+        	    "Écrivez un message puis Entrée. /quit pour quitter."
+        	);
+        
         receiverThread.start();
         emitterThread.start();
     }
@@ -154,7 +169,7 @@ public class ChatCoordinator {
     private void printMessage(Packet packet) throws IOException {
         if (packet instanceof ChatMessagePacket chatPacket) {
             ChatMessage message = chatPacket.getMessage();
-
+            
             console.showMessage(
                     message,
                     Objects.equals(username, message.getUsername())
@@ -187,6 +202,15 @@ public class ChatCoordinator {
             console.showError(
                     "Erreur lors de la fermeture : " + e.getMessage()
             );
+        }
+    }
+    
+    public void waitForChatToEnd() throws InterruptedException {
+        if (receiverThread != null) {
+            receiverThread.join();
+        }
+        if (emitterThread != null) {
+            emitterThread.join();
         }
     }
 }

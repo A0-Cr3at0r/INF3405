@@ -88,7 +88,7 @@ public class ChatCoordinator {
     			content);
     	
     	historyManager.saveMessage(message);
-    	console.showMessage(message);
+    	console.showMessage(message, false);
     	
     	broadcastMessage(sender, message);
     }
